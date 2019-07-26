@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    	<title>CoolMeeting会议管理系统</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="styles/common.css"/>
+		<script src="./My97DatePicker/WdatePicker.js"></script>
+        <script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
+        <script type="text/javascript" src="/js/loadname.js"></script>
+        <style type="text/css">
+            #divfrom{
+                float:left;
+                width:150px;
+            }
+            #divto{
+                float:left;
+                width:150px;
+            }
+            #divoperator{
+                float:left;
+                width:50px;
+                padding:60px 5px;
+            }
+            #divoperator input[type="button"]{
+                margin:10px 0;
+            }
+            #selDepartments{
+                display:block;
+                width:100%;
+            }
+            #selEmployees{
+                display:block;
+                width:100%;
+                height:200px;
+            }
+            #selSelectedEmployees{
+                display:block;
+                width:100%;
+                height:225px;
+            }
+        </style>
+        <script src="js/bookmeeting.js"></script>
+
+    </head>
+    <body>
+        <div class="page-header">
+            <div class="header-banner">
+                <img src="images/header.png" alt="CoolMeeting"/>
+            </div>
+            <div class="header-title">
+                欢迎访问Cool-Meeting会议管理系统
+            </div>
+            <div class="header-quicklink">
+                欢迎您，<strong>admin</strong>
+                <a href="changepassword.html">[修改密码]</a>
+            </div>
+        </div>
+        <div class="page-body">
+            <div class="page-sidebar">
+                <div class="sidebar-menugroup">
+                    <div class="sidebar-grouptitle">个人中心</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menuitem"><a href="notifications.html">最新通知 √</a></li>
+                        <li class="sidebar-menuitem"><a href="mymeetings.html">我的会议  √</a></li>
+                        <li class="sidebar-menuitem active"><a href="#">我的预定</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-menugroup">
+                    <div class="sidebar-grouptitle">人员管理</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menuitem"><a href="#">部门管理</a></li>
+                        <li class="sidebar-menuitem"><a href="#">员工注册</a></li>
+                        <li class="sidebar-menuitem"><a href="#">注册审批</a></li>
+                        <li class="sidebar-menuitem"><a href="#">搜索员工</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-menugroup">
+                    <div class="sidebar-grouptitle">会议预定</div>
+                    <ul class="sidebar-menu">
+                        <li class="sidebar-menuitem"><a href="#">添加会议室</a></li>
+                        <li class="sidebar-menuitem"><a href="#">查看会议室</a></li>
+                        <li class="sidebar-menuitem"><a href="bookmeeting.html">预定会议 √</a></li>
+                        <li class="sidebar-menuitem"><a href="#">搜索会议</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="page-content">
+                <div class="content-nav">
+                    会议预定 > 预定会议
+                </div>
+                <form id="mettingForm">
+                    <fieldset>
+                        <legend>会议信息</legend>
+                        <table class="formtable">
+                            <tr>
+                                <td>会议名称：</td>
+                                <td>
+                                    <input type="text" name="mettingName" maxlength="20"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>预计参加人数：</td>
+                                <td>
+                                    <input type="text" name="mettingSize" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>预计开始时间：</td>
+                                <td>
+                                    <input class="Wdate" type="text" id="starttime" name="mettingStarttime"
+                                   onClick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:ss'})">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>预计结束时间：</td>
+                                <td>
+                                    <input class="Wdate" type="text" id="endtime" name="mettingEndtime"
+                                   onClick="WdatePicker({dateFmt:'yyyy/MM/dd HH:mm:ss'})">
+                                </td>
+                            </tr>
+							<tr>
+                                <td>会议室名称：</td>
+                                <td>
+                                    <select name="roomId" id="rooms">
+<!--                                     	<option value="1">第一会议室</option>-->
+<!--                                     	<option value="2">第二会议室</option>-->
+<!--										<option value="3">第三会议室</option>-->
+                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>会议说明：</td>
+                                <td>
+                                    <textarea name="remark" id="description" rows="5"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>选择参会人员：</td>
+                                <td>
+                                    <div id="divfrom">
+                                        <select name="deptId"  onchange="findUserByDeptId()" id="selDepartments" >
+<!--                                        	<option value="1">技术部</option>-->
+<!--	                                     	<option value="2">销售部</option>-->
+<!--											<option value="3">研发部</option>-->
+                                        </select>
+                                        <select id="selEmployees" multiple="true">
+<!--                                        	<option value="1">员工a</option>-->
+<!--	                                     	<option value="2">员工b</option>-->
+<!--											<option value="3">员工c</option>-->
+                                        </select>
+                                    </div>
+                                    <div id="divoperator">
+                                        <input type="button" class="clickbutton" value="&gt;" onclick="selectedUser()" />
+                                        <input type="button" class="clickbutton" value="&lt;" />
+                                    </div>
+                                    <div id="divto">
+                                        <select name="userIds" id="selSelectedEmployees" multiple="true">
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="command" colspan="2">
+                                    <input type="button" class="clickbutton" value="预定会议" onclick="subFrom()"/>
+                                    <input type="reset" class="clickbutton" value="重置"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="page-footer">
+            <hr/>
+            更多问题，欢迎联系<a href="mailto:webmaster@eeg.com">管理员</a>
+            <img src="images/footer.png" alt="CoolMeeting"/>
+        </div>
+    </body>
+</html>
